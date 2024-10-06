@@ -9,16 +9,9 @@ public partial class ViewModel(MainWindowService service) : ObservableObject
 	[RelayCommand]
 	private async Task GenerateVoice()
 	{
-		string apiKey = "";
-		string voiceId = "";
-
-		service.ApiKey = apiKey;
-		service.VoiceId = voiceId;
-		MainWindowService tts = service;
-
-		byte[] audioContent = await tts.TextToSpeech("あらゆる現実をすべて自分の方へ捻じ曲げたのだ。");
+		byte[] audioContent = await service.TextToSpeech("あらゆる現実をすべて自分の方へ捻じ曲げたのだ。");
 
 		if (audioContent != null)
-			tts.SaveAudio(audioContent, "generatedVoices");
+			service.SaveAudio(audioContent, "generatedVoices");
 	}
 }
