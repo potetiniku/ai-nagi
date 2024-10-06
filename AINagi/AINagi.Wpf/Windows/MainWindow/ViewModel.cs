@@ -15,12 +15,11 @@ public partial class ViewModel(MainWindowService service) : ObservableObject
 	[RelayCommand]
 	private async Task SendMessage()
 	{
-		Answer.Value = await service.GetAnswer(Prompt.Value);
-	}
+		string answer = await service.GetAnswer(Prompt.Value);
+		byte[] mp3 = await service.GenerateMp3Voice(answer);
 
-	private async Task GenerateVoice()
-	{
-		await PlayMp3Audio(await service.GenerateMp3Voice("あらゆる現実をすべて自分の方へ捻じ曲げたのだ。"));
+		Answer.Value = answer;
+		await PlayMp3Audio(mp3);
 	}
 
 	private async Task PlayMp3Audio(byte[] mp3)
