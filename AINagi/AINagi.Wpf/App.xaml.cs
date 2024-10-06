@@ -11,7 +11,10 @@ public partial class App : Application
 {
 	public App()
 	{
-		Ioc.Default.ConfigureServices(new ServiceCollection()
+		ServiceCollection services = new();
+		services.AddHttpClient<MainWindowService>();
+
+		Ioc.Default.ConfigureServices(services
 			.AddSingleton<MainWindowService>()
 			.AddTransient<Windows.MainWindow.ViewModel>()
 			.BuildServiceProvider());

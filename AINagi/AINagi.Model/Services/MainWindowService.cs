@@ -6,8 +6,10 @@ namespace AINagi.Model.Services;
 
 public class MainWindowService
 {
-	public MainWindowService()
+	public MainWindowService(HttpClient httpClient)
 	{
+		this.httpClient = httpClient;
+
 		IConfigurationRoot appsettings = new ConfigurationBuilder()
 		   .AddJsonFile("appsettings.json")
 		   .Build();
@@ -16,6 +18,7 @@ public class MainWindowService
 		VoiceId = appsettings["ElevenLabsVoiceId"]!;
 	}
 
+	private readonly HttpClient httpClient;
 	private const string Url = "https://api.elevenlabs.io/v1/text-to-speech";
 
 	private readonly string ApiKey;
@@ -23,9 +26,8 @@ public class MainWindowService
 
 	public async Task<byte[]> TextToSpeech(string text)
 	{
-		using HttpClient client = new();
-		client.DefaultRequestHeaders.Add("Accept", "audio/wav");
-		client.DefaultRequestHeaders.Add("xi-api-key", ApiKey);
+		httpClient.DefaultRequestHeaders.Add("Accept", "audio/wav");
+		httpClient.DefaultRequestHeaders.Add("xi-api-key", ApiKey);
 
 		var body = new
 		{
@@ -41,7 +43,7 @@ public class MainWindowService
 
 		StringContent content = new(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
 
-		HttpResponseMessage response = await client.PostAsync($"{Url}/{VoiceId}", content);
+		HttpResponseMessage response = await httpClient.PostAsync($"{Url}/{VoiceId}", content);
 
 		if (!response.IsSuccessStatusCode)
 		{
