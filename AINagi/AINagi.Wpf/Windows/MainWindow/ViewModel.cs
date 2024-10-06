@@ -15,7 +15,7 @@ public partial class ViewModel(MainWindowService service) : ObservableObject
 	[RelayCommand]
 	private async Task SendMessage()
 	{
-
+		Answer.Value = await service.GetAnswer(Prompt.Value);
 	}
 
 	private async Task GenerateVoice()
