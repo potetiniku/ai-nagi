@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿// Ignore Spelling: App
+
+using System.Windows;
 using AINagi.Model.Services;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,4 +22,3 @@ public partial class App : Application
 			.BuildServiceProvider());
 	}
 }
-
