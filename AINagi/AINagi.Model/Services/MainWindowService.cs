@@ -40,26 +40,11 @@ public class MainWindowService
 		};
 
 		StringContent content = new(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
-
 		HttpResponseMessage response = await httpClient.PostAsync($"{Url}/{VoiceId}", content);
 
 		if (!response.IsSuccessStatusCode)
 			throw new HttpRequestException($"エラー: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
 
 		return await response.Content.ReadAsByteArrayAsync();
-	}
-
-	public void SaveAudio(byte[] audioContent, string outputDir)
-	{
-		if (!Directory.Exists(outputDir))
-		{
-			Directory.CreateDirectory(outputDir);
-		}
-
-		string filename = $"audio_{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}.wav";
-		string filePath = Path.Combine(outputDir, filename);
-
-		File.WriteAllBytes(filePath, audioContent);
-		Console.WriteLine($"音声ファイルを保存しました: {filePath}");
 	}
 }
