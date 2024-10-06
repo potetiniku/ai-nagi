@@ -26,19 +26,18 @@ public class MainWindowService
 
 	public async Task<byte[]> TextToSpeech(string text)
 	{
-		httpClient.DefaultRequestHeaders.Add("Accept", "audio/wav");
 		httpClient.DefaultRequestHeaders.Add("xi-api-key", ApiKey);
 
 		var body = new
 		{
 			text = text,
-			model_id = "eleven_turbo_v2_5",
+			model_id = "eleven_multilingual_v2",
 			voice_settings = new
 			{
 				stability = 0.5,
-				similarity_boost = 0.5
-			},
-			output_format = "wav"
+				similarity_boost = 0.75,
+				style = 0.25
+			}
 		};
 
 		StringContent content = new(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
