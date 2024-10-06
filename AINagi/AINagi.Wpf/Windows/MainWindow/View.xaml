@@ -28,11 +28,13 @@
 			Grid.Column="0"
 			Margin="0,0,8,0"
 			VerticalAlignment="Center"
-			materialDesign:HintAssist.Hint="メッセージを入力してください"
+			materialDesign:HintAssist.Hint="メッセージを入力してください (Enterで改行)"
+			AcceptsReturn="True"
 			Text="{Binding Prompt.Value}"/>
 		<Button
 			Grid.Row="0"
 			Grid.Column="1"
+			VerticalAlignment="Bottom"
 			Command="{Binding SendMessageCommand}"
 			Style="{StaticResource MaterialDesignFloatingActionMiniButton}">
 			<materialDesign:PackIcon Kind="Send"/>
