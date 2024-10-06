@@ -46,10 +46,7 @@ public class MainWindowService
 		HttpResponseMessage response = await httpClient.PostAsync($"{Url}/{VoiceId}", content);
 
 		if (!response.IsSuccessStatusCode)
-		{
-			Console.WriteLine($"エラー: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
-			return null;
-		}
+			throw new HttpRequestException($"エラー: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
 
 		return await response.Content.ReadAsByteArrayAsync();
 	}
