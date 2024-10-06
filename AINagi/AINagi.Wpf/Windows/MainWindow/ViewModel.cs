@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reactive.Linq;
 using AINagi.Model.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -7,10 +8,22 @@ using Reactive.Bindings;
 
 namespace AINagi.Wpf.Windows.MainWindow;
 
-public partial class ViewModel(MainWindowService service) : ObservableObject
+public partial class ViewModel : ObservableObject
 {
-	public ReactiveProperty<string> Prompt { get; } = new();
-	public ReactiveProperty<string> Answer { get; } = new();
+	public ViewModel(MainWindowService service)
+	{
+		this.service = service;
+
+		CanSendMessage = Prompt
+			.Select(p => p.Length != 0)
+			.ToReadOnlyReactiveProperty();
+	}
+
+	public ReactiveProperty<string> Prompt { get; } = new(string.Empty);
+	public ReactiveProperty<string> Answer { get; } = new(string.Empty);
+	public ReadOnlyReactiveProperty<bool> CanSendMessage { get; }
+
+	private readonly MainWindowService service;
 
 	[RelayCommand]
 	private async Task SendMessage()
