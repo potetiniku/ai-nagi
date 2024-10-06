@@ -14,6 +14,7 @@ public class MainWindowService
 
 		openAIApi = new(appsettings["OpenAIApiKey"]!);
 		conversation = openAIApi.Chat.CreateConversation();
+		conversation.AppendSystemMessage(File.ReadAllText(appsettings["SystemMessageFile"]!));
 
 		elevenLabs = new(httpClient, appsettings["ElevenLabsApiKey"]!);
 		voiceId = appsettings["ElevenLabsVoiceId"]!;
