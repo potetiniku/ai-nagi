@@ -20,7 +20,7 @@ public partial class ViewModel(MainWindowService service) : ObservableObject
 
 	private async Task GenerateVoice()
 	{
-		await PlayMp3Audio(await service.TextToSpeech("あらゆる現実をすべて自分の方へ捻じ曲げたのだ。"));
+		await PlayMp3Audio(await service.GenerateMp3Voice("あらゆる現実をすべて自分の方へ捻じ曲げたのだ。"));
 	}
 
 	private async Task PlayMp3Audio(byte[] mp3)
