@@ -12,24 +12,26 @@ public class MainWindowService
 		   .AddJsonFile("appsettings.json")
 		   .Build();
 
-		openAIApiKey = appsettings["OpenAIApiKey"]!;
+		openAIApi = new(appsettings["OpenAIApiKey"]!);
+		conversation = openAIApi.Chat.CreateConversation();
+
 		elevenLabs = new(httpClient, appsettings["ElevenLabsApiKey"]!);
 		voiceId = appsettings["ElevenLabsVoiceId"]!;
 	}
 
-	private readonly string openAIApiKey;
+	private readonly OpenAIAPI openAIApi;
+	private readonly Conversation conversation;
+
 	private readonly ElevenLabsClient elevenLabs;
 	private readonly string voiceId;
 
-	public async Task<byte[]> GenerateMp3Voice(string text) =>
-		await elevenLabs.GenerateMp3Voice(text, voiceId);
-
 	public async Task<string> GetAnswer(string prompt)
 	{
-		OpenAIAPI api = new(openAIApiKey);
-		Conversation chat = api.Chat.CreateConversation();
-		chat.AppendUserInput(prompt);
-		string response = await chat.GetResponseFromChatbotAsync();
+		conversation.AppendUserInput(prompt);
+		string response = await conversation.GetResponseFromChatbotAsync();
 		return response;
 	}
+
+	public async Task<byte[]> GenerateMp3Voice(string text) =>
+		await elevenLabs.GenerateMp3Voice(text, voiceId);
 }
