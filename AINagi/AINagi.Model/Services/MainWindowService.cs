@@ -16,6 +16,7 @@ public class MainWindowService
 
 		ApiKey = appsettings["ElevenLabsApiKey"]!;
 		VoiceId = appsettings["ElevenLabsVoiceId"]!;
+		httpClient.DefaultRequestHeaders.Add("xi-api-key", ApiKey);
 	}
 
 	private readonly HttpClient httpClient;
@@ -26,8 +27,6 @@ public class MainWindowService
 
 	public async Task<byte[]> TextToSpeech(string text)
 	{
-		httpClient.DefaultRequestHeaders.Add("xi-api-key", ApiKey);
-
 		var body = new
 		{
 			text = text,
